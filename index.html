@@ -1,0 +1,520 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta name="description"
+    content="Depth Helps: Improving Pre-trained RGB-based Policy with Depth Information Injection">
+  <meta name="keywords" content="">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Depth Helps: Improving Pre-trained RGB-based Policy with Depth Information Injection</title>
+  <!-- Global site tag (gtag.js) - Google Analytics -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-PYVRSFMDRL"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+
+    function gtag() {
+      dataLayer.push(arguments);
+    }
+
+    gtag('js', new Date());
+
+    gtag('config', 'G-PYVRSFMDRL');
+  </script>
+
+  <link href="https://fonts.googleapis.com/css?family=Google+Sans|Noto+Sans|Castoro" rel="stylesheet">
+
+  <link rel="stylesheet" href="./static/css/bulma.min.css">
+  <link rel="stylesheet" href="./static/css/bulma-carousel.min.css">
+  <link rel="stylesheet" href="./static/css/bulma-slider.min.css">
+  <link rel="stylesheet" href="./static/css/fontawesome.all.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/jpswalsh/academicons@1/css/academicons.min.css">
+  <link rel="stylesheet" href="./static/css/index.css">
+  <link rel="icon" href="./static/images/favicon.ico">
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script defer src="./static/js/fontawesome.all.min.js"></script>
+  <script src="./static/js/bulma-carousel.min.js"></script>
+  <script src="./static/js/bulma-slider.min.js"></script>
+  <script src="./static/js/index.js"></script>
+  <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+  <style type="text/css">
+    .tg {
+      border-collapse: collapse;
+      border-spacing: 0;
+    }
+
+    .tg td {
+      border-color: black;
+      border-style: solid;
+      border-width: 1px;
+      font-family: Arial, sans-serif;
+      font-size: 14px;
+      overflow: hidden;
+      padding: 10px 5px;
+      word-break: normal;
+    }
+
+    .tg th {
+      border-color: black;
+      border-style: solid;
+      border-width: 1px;
+      font-family: Arial, sans-serif;
+      font-size: 14px;
+      font-weight: normal;
+      overflow: hidden;
+      padding: 10px 5px;
+      word-break: normal;
+    }
+
+    .tg .tg-c3ow {
+      border-color: inherit;
+      text-align: center;
+      vertical-align: top
+    }
+
+    .tg .tg-7btt {
+      border-color: inherit;
+      font-weight: bold;
+      text-align: center;
+      vertical-align: top
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- Navbar -->
+  <nav class="navbar" role="navigation" aria-label="main navigation">
+    <div class="navbar-brand">
+      <a role="button" class="navbar-burger" aria-label="menu" aria-expanded="false">
+        <span aria-hidden="true"></span>
+        <span aria-hidden="true"></span>
+        <span aria-hidden="true"></span>
+      </a>
+    </div>
+    <div class="navbar-menu">
+      <div class="navbar-start" style="flex-grow: 1; justify-content: center;">
+        <a class="navbar-item" href="https://gewu-lab.github.io/">
+          <span class="icon">
+            <i class="fas fa-home"></i>
+          </span>
+        </a>
+      </div>
+
+    </div>
+  </nav>
+  <!-- End navbar -->
+
+  <!-- Title&author -->
+  <section class="hero">
+    <div class="hero-body">
+      <div class="container is-max-desktop">
+        <div class="columns is-centered">
+          <div class="column has-text-centered">
+            <!-- paper title -->
+            <h1 class="title is-1 publication-title">Depth Helps: Improving Pre-trained RGB-based Policy with Depth
+              Information Injection
+            </h1>
+            <!-- author info -->
+            <div class="is-size-5 publication-authors">
+              <!-- Paper authors -->
+              <span class="author-block">
+                <a href="https://github.com/pangxincheng" target="_blank">Xincheng Pang</a><sup>1,2,*</sup>,
+              </span>
+              <span class="author-block">
+                <a href="https://xwinks.github.io" target="_blank">Wenke Xia</a><sup>1,2,*</sup>,
+              </span>
+              <span class="author-block">
+                <a href="https://scholar.google.com/citations?hl=zh-CN&user=cw3EaAYAAAAJ&view_op=list_works&sortby=pubdate"
+                  target="_blank">Zhigang Wang</a><sup>2</sup>,
+              </span>
+              <span class="author-block">
+                <a href="https://scholar.google.com/citations?user=DQB0hqwAAAAJ&hl=zh-CN" target="_blank">Bin
+                  Zhao</a><sup>2,3</sup>,
+              </span>
+              <span class="author-block">
+                <a href="https://dtaoo.github.io" target="_blank">Di Hu</a><sup>1,†</sup>,
+              </span>
+              <span class="author-block">
+                <a href="https://scholar.google.es/citations?user=dasL9V4AAAAJ&hl=zh-CN" target="_blank">Dong
+                  Wang</a><sup>2,†</sup>,
+              </span>
+              <span class="author-block">
+                <a href="https://scholar.google.com/citations?user=ahUibskAAAAJ&hl=en&oi=ao" target="_blank">Xuelong
+                  Li</a><sup>2,4</sup>
+              </span>
+            </div>
+            <!-- institution and symbol description -->
+            <div class="is-size-5 publication-authors">
+              <span class="author-block">
+                <sup>1</sup> Gaoling School of Artificial Intelligence, Renmin University of China
+                <br>
+                <sup>2</sup> Shanghai Artificial Intelligence Laboratory
+                <br>
+                <sup>3</sup> Northwestern Polytechnical University
+                <br>
+                <sup>4</sup> Institute of Artificial Intelligence, China Telecom Corp Ltd
+                <br>
+                IROS 2024
+              </span>
+              <span class="eql-cntrb"><small><br><sup>*</sup>Equal Contribution,</small></span>
+              <span class="eql-cntrb"><small><sup>†</sup>Corresponding author</small></span>
+            </div>
+            <!-- links -->
+            <div class="column has-text-centered">
+              <div class="publication-links">
+                <!-- Arxiv PDF link -->
+                <span class="link-block">
+                  <a href="https://arxiv.org/pdf/<ARXIV PAPER ID>.pdf" target="_blank"
+                    class="external-link button is-normal is-rounded is-dark">
+                    <span class="icon">
+                      <i class="fas fa-file-pdf"></i>
+                    </span>
+                    <span>Paper</span>
+                  </a>
+                </span>
+                <!-- ArXiv abstract Link -->
+                <span class="link-block">
+                  <a href="https://arxiv.org/abs/<ARXIV PAPER ID>" target="_blank"
+                    class="external-link button is-normal is-rounded is-dark">
+                    <span class="icon">
+                      <i class="ai ai-arxiv"></i>
+                    </span>
+                    <span>arXiv</span>
+                  </a>
+                </span>
+                <!-- Github link -->
+                <span class="link-block">
+                  <a href="https://github.com/GeWu-Lab/DepthHelps-IROS2024" target="_blank"
+                    class="external-link button is-normal is-rounded is-dark">
+                    <span class="icon">
+                      <i class="fab fa-github"></i>
+                    </span>
+                    <span>Code</span>
+                  </a>
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  <!-- End title&author -->
+
+  <!-- Supplementary video -->
+  <section class="hero teaser">
+    <div class="container is-max-desktop">
+      <div class="hero-body">
+        <video id="teaser" autoplay controls muted loop height="100%">
+          <source src="./static/videos/IROS24_0190_VI_i.mp4" type="video/mp4">
+        </video>
+        <h2 class="subtitle has-text-centered">
+          Supplementary video
+        </h2>
+      </div>
+    </div>
+  </section>
+  <!-- End supplementary video -->
+
+  <!-- Experiment videos -->
+  <section class="hero is-small is-light">
+    <div class="hero-body">
+      <div class="container">
+        <div id="results-carousel" class="carousel results-carousel">
+          <div class="item item-steve">
+            <video poster="" id="steve" autoplay controls muted loop playsinline height="100%">
+              <source src="./static/videos/steve.mp4" type="video/mp4">
+            </video>
+          </div>
+          <div class="item item-chair-tp">
+            <video poster="" id="chair-tp" autoplay controls muted loop playsinline height="100%">
+              <source src="./static/videos/chair-tp.mp4" type="video/mp4">
+            </video>
+          </div>
+          <div class="item item-shiba">
+            <video poster="" id="shiba" autoplay controls muted loop playsinline height="100%">
+              <source src="./static/videos/shiba.mp4" type="video/mp4">
+            </video>
+          </div>
+          <div class="item item-fullbody">
+            <video poster="" id="fullbody" autoplay controls muted loop playsinline height="100%">
+              <source src="./static/videos/fullbody.mp4" type="video/mp4">
+            </video>
+          </div>
+          <div class="item item-blueshirt">
+            <video poster="" id="blueshirt" autoplay controls muted loop playsinline height="100%">
+              <source src="./static/videos/blueshirt.mp4" type="video/mp4">
+            </video>
+          </div>
+          <div class="item item-mask">
+            <video poster="" id="mask" autoplay controls muted loop playsinline height="100%">
+              <source src="./static/videos/mask.mp4" type="video/mp4">
+            </video>
+          </div>
+          <div class="item item-coffee">
+            <video poster="" id="coffee" autoplay controls muted loop playsinline height="100%">
+              <source src="./static/videos/coffee.mp4" type="video/mp4">
+            </video>
+          </div>
+          <div class="item item-toby">
+            <video poster="" id="toby" autoplay controls muted loop playsinline height="100%">
+              <source src="./static/videos/toby2.mp4" type="video/mp4">
+            </video>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  <!-- End experiment videos -->
+
+  <!-- Paper abstract -->
+  <section class="section hero">
+    <div class="container is-max-desktop">
+      <div class="columns is-centered has-text-centered">
+        <div class="column is-four-fifths">
+          <h2 class="title is-3">Abstract</h2>
+          <div class="content has-text-justified">
+            <p>
+              3D perception ability is crucial for generalizable robotic manipulation.
+              While recent foundation models have made significant strides in perception
+              and decision-making with RGB-based input, their lack of 3D perception limits
+              their effectiveness in fine-grained robotic manipulation tasks. To address
+              these limitations, we propose a Depth Information Injection (\( \rm{DI}^{2} \))
+              framework that leverages the RGB-Depth modality for policy fine-tuning,
+              while relying solely on RGB images for robust and efficient deployment.
+              Concretely, we introduce the Depth Completion Module (DCM) to extract the spatial
+              prior knowledge related to depth information and generate virtual depth information
+              from RGB inputs to aid in policy deployment. Further, we propose the Depth-Aware
+              Codebook (DAC) to eliminate noise and reduce the cumulative error from the depth
+              prediction. In the inference phase, this framework employs both RGB inputs and
+              the accurately predicted depth data to generate the manipulation action.
+              We conduct experiments on simulated LIBERO environments and real-world scenarios,
+              and the experiment results prove that our method could effectively enhance the
+              pre-trained RGB-based policy with 3D perception ability for robotic manipulation.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  <!-- End paper abstract -->
+
+  <!-- Paper method -->
+  <section class="section hero is-light">
+    <div class="container is-max-desktop">
+      <div class="columns is-centered has-text-centered">
+        <div class="column is-four-fifths">
+          <h2 class="title is-3">Method</h2>
+          <img src="./static/images/overview.png" />
+          <h2 class="subtitle has-text-centered">
+            Overview of our method
+          </h2>
+          <div class="content has-text-justified">
+            <p>
+              When the model takes RGB-D as input during training, the entire model can be expressed as follows:
+              $$
+              \begin{equation}
+              \begin{aligned}
+              a_t &= \pi \left({\rm VLM}\left(f^{text},f_t^{rgb},f_t^{depth}\right)\right), \\
+              \end{aligned}
+              \end{equation}
+              $$
+              where \( \pi \) is the policy model to get the final action. We utilize the Vision-Language Model (VLM) to
+              extract features. The \( f^{text} \), \( f_t^{rgb} \) and \( f_t^{depth} \) are extracted feature.
+            </p>
+            <p>
+              The RGB-D model, effectively utilizes depth images for 3D perception but is limited by its reliance on
+              depth images. To overcome this limitation and enable manipulation in prevalent RGB-only scenarios, we
+              introduce the Depth Completion Module (DCM). This module predicts the depth feature \( \hat{f}_t^{depth}
+              \) from the RGB image feature \( f_t^{rgb} \), incorporating spatial prior knowledge \( P \):
+              $$
+              \begin{equation}
+              \begin{aligned}
+              \hat{f}_{t}^{depth} = {\rm DCM}\left(f_t^{rgb}, P\right).
+              \end{aligned}
+              \end{equation}
+              $$
+            </p>
+            <p>
+              To reduce the cumulative errors, we further propose a Depth-Aware Codebook to discretize the depth
+              features predicted by the DCM:
+              $$
+              \begin{equation}
+              \begin{aligned}
+              \widetilde{f}_{t}^{depth} = {\rm Codebook}\left(\hat{f}_{t}^{depth}\right).
+              \end{aligned}
+              \end{equation}
+              $$
+            </p>
+            <p>
+              When we only have RGB as the input during inference, we input the \( f^{text} \), \( f_t^{rgb} \), and \(
+              \widetilde{f}_{t}^{depth} \) together into the Vision-Language Model (VLM) to extract features.
+              Ultimately, these features are fed into the policy model \( \pi \) to get the final action.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  <!-- End paper method -->
+
+  <!-- Experiments -->
+  <section class="section hero">
+    <div class="container is-max-desktop">
+      <div class="columns is-centered has-text-centered">
+        <div class="column is-four-fifths">
+          <h2 class="title is-3">Experiments</h2>
+          <div class="content has-text-justified">
+            <h3 class="is-4">Preliminary experiment</h3>
+          </div>
+          <div class="content has-text-justified">
+            <p>
+              To get the upper bound of our method, we first conduct a
+              preliminary experiment where the model could obtain both
+              RGB images and depth images as input. We compare the
+              following methods:
+            </p>
+            <p>
+              1. <b>RGB-RF:</b> The standard RoboFlamingo architec-
+              ture.
+            </p>
+            <p>
+              2. <b>RGB-D-RF:</b> Based on RGB-RF, we add an extra branch
+              to extract features from depth images.
+            </p>
+            <p>
+              3. <b>Data Aug</b>: This method augments the training data
+              by randomly removing RGB modality or depth modality
+              input with a certain probability \( p \).
+            </p>
+            <p>
+              4. <b>MM Prompt</b>: Building upon the Data Aug method,
+              this method introduces an additional learnable token to
+              indicate the current combination type of input modali-
+              ties. (e.g., RGB-only, Depth-only, or RGB-D)
+            </p>
+            <p>
+              5. <b>Ours∗</b>: To utilize the ground truth depth image, we
+              replace the DCM described in Section III(see in the paper) with the depth
+              branch as shown in the gray box in Figure 2(see in the paper).
+            </p>
+          </div>
+          <img src="./static/images/experiments1.png" style="width: 80%;" />
+          <div class="content has-text-justified">
+            <p>
+              Table I presents success rates of different models on the LIBERO benchmark when provided with RGB-D input.
+              Our method achieves the best overall average success rate of 63.95%, nearly a 6% improvement over the
+              baseline RGB-RF model.
+            </p>
+          </div>
+
+          <div class="content has-text-justified">
+            <h3 class="is-4">Main experiment</h3>
+          </div>
+          <div class="content has-text-justified">
+            <p>
+              We also compare our results with two cross-modal knowledge distillation methods:
+            </p>
+            <p>
+              1. <b>CRD:</b> This is a cross-modal knowledge distillation
+              method based on contrastive learning loss
+            </p>
+            <p>
+              2. <b>CMKD:</b> This is a cross-modal knowledge distilla-
+              tion method based on mean squared error (MSE) loss
+            </p>
+            <p>
+              The results are as shown in Table II.
+            </p>
+          </div>
+          <img src="./static/images/experiments2.png" style="width: 80%;" />
+
+          <div class="content has-text-justified">
+            <h3 class="is-4">Real World Experiments</h3>
+          </div>
+          <div class="content has-text-justified">
+            <p>
+              The results are as shown in Table IV.
+            </p>
+          </div>
+          <img src="./static/images/realworld.png" style="width: 80%;" />
+          <img src="./static/images/experiments3.png" style="width: 80%;" />
+        </div>
+      </div>
+    </div>
+    </div>
+  </section>
+  <!-- End experiments -->
+
+  <!-- Paper conclusion -->
+  <section class="section hero is-light">
+    <div class="container is-max-desktop">
+      <div class="columns is-centered has-text-centered">
+        <div class="column is-four-fifths">
+          <h2 class="title is-3">Conclusion</h2>
+          <div class="content has-text-justified">
+            <p>
+              In this paper, we propose the Depth Information Injection (\( {\rm DI}^2 \)) framework. It enhances the
+              performance of pre-trained robot manipulation models that rely solely on RGB inputs by leveraging minimal
+              aligned RGB-D trajectory data.
+              Our framework centers around two primary modules.
+              Firstly, the Depth Completion Module (DCM) integrates spatial prior knowledge derived from depth images in
+              the training trajectories into the model.
+              When operating with only RGB inputs during inference, the DCM leverages learnable tokens alongside RGB
+              image features to accurately predict depth features.
+              Secondly, due to the sequential nature of robot manipulation tasks, using depth features predicted by the
+              DCM directly can cause cumulative errors. This may lead to significant deviations from the intended
+              trajectory.
+              To address this challenge, we introduce the Depth-Aware Codebook. It discretizes the depth features
+              predicted by the DCM, significantly improving prediction accuracy.
+              The \( {\rm DI}^2 \) framework achieved better results in the LIBERO benchmark. Further, the results of
+              the real-world experiments demonstrate the reliability and applicability of our method in practical
+              application scenarios.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  <!-- End paper conclusion -->
+
+  <!-- bibtex -->
+  <section class="section is-light" id="BibTeX">
+    <div class="container is-max-desktop content">
+      <h2 class="title">BibTeX</h2>
+      <pre>
+        <code>
+          TODO
+        </code>
+      </pre>
+    </div>
+  </section>
+  <!-- End bibtex -->
+
+  <footer class="footer">
+    <div class="container">
+      <div class="columns is-centered">
+        <div class="column is-8">
+          <div class="content">
+            <p>
+              This website is licensed under a <a rel="license"
+                href="http://creativecommons.org/licenses/by-sa/4.0/">Creative
+                Commons Attribution-ShareAlike 4.0 International License</a>.
+            </p>
+            <p>
+              This means you are free to borrow the <a href="https://github.com/nerfies/nerfies.github.io">source
+                code</a> of this website,
+              we just ask that you link back to this page in the footer.
+              Please remember to remove the analytics code included in the header of the website which
+              you do not want on your website.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </footer>
+</body>
+
+</html>
