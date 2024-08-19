@@ -98,4 +98,14 @@ python src/eval.py \
 ```
 
 #### Citation
-- TODO
+```
+@misc{pang2024depthhelpsimprovingpretrained,
+  title={Depth Helps: Improving Pre-trained RGB-based Policy with Depth Information Injection}, 
+  author={Xincheng Pang and Wenke Xia and Zhigang Wang and Bin Zhao and Di Hu and Dong Wang and Xuelong Li},
+  year={2024},
+  eprint={2408.05107},
+  archivePrefix={arXiv},
+  primaryClass={cs.RO},
+  url={https://arxiv.org/abs/2408.05107}, 
+}
+```
